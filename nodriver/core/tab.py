@@ -868,6 +868,12 @@ class Tab(Connection):
         else:
             return remote_object, exception_details
 
+    def on(self, event: str, callback: callable):
+        if event == "close":
+            self.close_callback = callback
+        else:
+            raise ValueError("Unsupported event")
+
     async def close(self):
         """
         close the current target (ie: tab,window,page)
@@ -876,6 +882,8 @@ class Tab(Connection):
         """
         if self.target and self.target.target_id:
             await self.send(cdp.target.close_target(target_id=self.target.target_id))
+        if hasattr(self, "close_callback"):
+            self.close_callback()
 
     async def get_window(self) -> Tuple[cdp.browser.WindowID, cdp.browser.Bounds]:
         """
