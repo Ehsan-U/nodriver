@@ -1,6 +1,6 @@
 [project]
 
-name = "nodriver" # Required
+name = "nodriver-extra" # Required
 version = "0.34"  # Required
 
 description = """
